@@ -2,11 +2,20 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
 
 // configurations
 const app = express();
 const PORT = process.env.PORT || 8080;
 dotenv.config();
+
+mongoose.connect(process.env.dbURI,{
+	useNewUrlParser: true
+});
+const db = mongoose.connection;
+db.on('error',function(err){
+	console.log(err);
+})
 
 // middlewares
 app.use(bodyParser.urlencoded({extended: false}));
