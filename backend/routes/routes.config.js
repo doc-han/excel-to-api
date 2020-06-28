@@ -12,5 +12,8 @@ exports.routesConfig = (app) => {
     });
     app.get('/test', (req,res) => {
         res.sendFile(path.join(__dirname, '../', '/testpage.html'));
-    })
+    });
+    app.get('/:slug', [
+      mainController.data  
+    ])
 }
