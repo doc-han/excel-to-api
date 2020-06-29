@@ -5,13 +5,10 @@ var storage = multer.diskStorage({
     callback(null, Date.now() + file.originalname);
   }
 });
-var imageFilter = function (req, file, cb) {
-    // accept image files only
-    // if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/i)) {
-    //     return cb(new Error('Only image files are allowed!'), false);
-    // }
+var xlsFilter = function (req, file, cb) {
+    // filter and make sure only xls files pass
     cb(null, true);
 };
-var upload = multer({ storage: storage, fileFilter: imageFilter});
+var upload = multer({ storage: storage, fileFilter: xlsFilter});
 
 module.exports = upload;

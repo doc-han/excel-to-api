@@ -6,31 +6,30 @@ class xlsParser {
         this._ = require('lodash');
         this.path = path
         this.sheets = this.nodeXls.parse(this.fs.readFileSync(this.path));
-        this.keys;
+        this.keys = [];
     }
 
     refineSheets = () => {
         // console.log(this.sheets)
-        let newsheets = [];
+        let newsheet = [];
         this.sheets.forEach(sheet => {
             let rows = sheet.data;
-            this.keys = rows.splice(0, 1)[0];
+            this.keys = [...this.keys, ...rows.splice(0, 1)[0]];
             this.keys = this.keys.map(key => this._.camelCase(key));
-            let newsheet = [];
             rows.forEach(row => {
                 if(!row.length) return;
                 let newRow = {};
                 for (let i = 0; i < row.length; i++) {
-                    newRow[keys[i]] = row[i];
+                    newRow[this.keys[i]] = row[i];
                 }
                 newsheet.push(newRow);
             })
-            newsheets.push(newsheet);
         })
-        this.sheets = newsheets;
+        this.sheets = newsheet;
     }
 
-    getSheet = () => this.sheets;
+    getSheets = () => this.sheets;
+    getKeys = () => this.keys;
 
     static init = _path => new this(_path);
 
