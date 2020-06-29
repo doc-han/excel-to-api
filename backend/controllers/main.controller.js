@@ -1,5 +1,6 @@
 const xlsParser = require('../config/xlsParser');
 const dataModel = require('../model/dataModel');
+const { filter } = require('../config/dataFilter');
 
 exports.upload = (req, res) => {
     // file: contains the uploaded file
@@ -19,11 +20,24 @@ exports.upload = (req, res) => {
 
 exports.data = (req, res) => {
     const { slug } = req.params;
-    console.log(req.query)
+    let { query } = req;
+    let nquery = {};
+    let qkeys = Object.keys(query);
     dataModel.findOne({ slug }).then(resp => {
-        let {keys, data} = resp;
-        res.send(data)
+        let { keys, data } = resp;
+        qkeys = qkeys.filter(el=>{
+            if(keys.indexOf(el) > -1){
+                nquery[el] = query[el];
+                return true;
+            }
+            return false;
+        });
+        if(qkeys.length){
+            data = filter(data, nquery);
+            res.json(data);
+        }else res.json(data);
     })
+
 }
 
 /*
