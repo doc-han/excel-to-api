@@ -18,12 +18,16 @@ exports.upload = (req, res) => {
     })
 }
 
-exports.data = (req, res) => {
+exports.data = (req, res, next) => {
     const { slug } = req.params;
     let { query } = req;
     let nquery = {};
     let qkeys = Object.keys(query);
     dataModel.findOne({ slug }).then(resp => {
+        if(!resp){
+            next();
+            return;
+        }
         let { keys, data } = resp;
         qkeys = qkeys.filter(el=>{
             if(keys.indexOf(el) > -1){
