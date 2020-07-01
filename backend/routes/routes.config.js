@@ -15,5 +15,6 @@ exports.routesConfig = (app) => {
     });
     app.get('/:slug', [
       mainController.data  
-    ])
+    ]);
+    app.use((req, res) => res.status(404).send("Page not found! <a href='/'>Go to home</a>"));
 }
