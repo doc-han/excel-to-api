@@ -49,7 +49,7 @@ export default function Upload() {
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
-    formData.append("file", file);
+    formData.append("xlsfile", file);
     if (fileName != "choose file") {
       try {
         const res = await axios.post("http://localhost:8080/upload", formData, {
@@ -70,6 +70,7 @@ export default function Upload() {
 
         setMessage("File Uploaded Successfully");
       } catch (error) {
+        console.log("error",error)
         if (error.response.status === 500) {
           setMessage("Problem with server");
         } else {
